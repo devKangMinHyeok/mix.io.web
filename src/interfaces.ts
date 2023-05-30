@@ -5,3 +5,12 @@ export interface IMenu {
   longDesc: string;
   image: string;
 }
+
+export interface IGlass {
+  id: number;
+  name: string;
+  type: GlassType;
+  size: number;
+}
+
+export type GlassType = "Cylinder" | "Square";
