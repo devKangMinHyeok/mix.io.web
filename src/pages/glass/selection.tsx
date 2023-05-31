@@ -1,12 +1,12 @@
-import BackRouterLayout from "@components/Layouts/BackRouterLayout";
+import RouterLayout from "@components/Layouts/RouterLayout";
 import GlassSelect from "@components/glass/GlassSelect";
 
 const GlassSelectionPage = () => {
   return (
     <div>
-      <BackRouterLayout>
+      <RouterLayout>
         <GlassSelect />
-      </BackRouterLayout>
+      </RouterLayout>
     </div>
   );
 };

@@ -13,4 +13,4 @@ export interface IGlass {
   size: number;
 }
 
-export type GlassType = "Cylinder" | "Square";
+export type GlassType = "CYLINDER" | "SQUARE";

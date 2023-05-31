@@ -1,4 +1,3 @@
-import BackRouterLayout from "@components/Layouts/BackRouterLayout";
 import {IMenu} from "@src/interfaces";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,7 +32,7 @@ const Detail = ({info}: {info: IMenu}) => {
       <div className="flex items-center justify-end mt-4">
         <Link href="/glass/selection">
           <div className="flex items-center text-blue-500">
-            <span className="mr-2">Glass 선택하기</span>
+            <span className="mr-2">Mix!</span>
             <FaArrowRight />
           </div>
         </Link>

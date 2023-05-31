@@ -88,13 +88,13 @@ export const sampleGlasses: IGlass[] = [
   {
     id: 1,
     name: "Glass1",
-    type: "Cylinder",
+    type: "CYLINDER",
     size: 30,
   },
   {
     id: 1,
     name: "Glass2",
-    type: "Square",
+    type: "SQUARE",
     size: 10,
   },
 ];
