@@ -1,8 +1,14 @@
 import RouterLayout from "@components/Layouts/RouterLayout";
+import {useRouter} from "next/router";
 import React, {ChangeEvent, useEffect, useState} from "react";
 
-const SetGlassSize = () => {
-  const [radius, setRadius] = useState<number | undefined>(200);
+interface SetGlassSizeProps {
+  radius: number | undefined;
+  setRadius: React.Dispatch<React.SetStateAction<number | undefined>>;
+}
+
+const SetGlassSize = ({radius, setRadius}: SetGlassSizeProps) => {
+  const router = useRouter();
 
   const handleSliderChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
