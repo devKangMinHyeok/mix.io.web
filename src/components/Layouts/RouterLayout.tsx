@@ -18,7 +18,7 @@ const RouterLayout = ({children, handler}: RouterLayoutProps) => {
             className="flex flex-row items-center"
             type="button"
             onClick={() => router.back()}
-            style={{margin: "1rem"}}
+            style={{margin: "1rem", fontSize: "36px"}}
           >
             <FaArrowLeft className="mr-2" />
             Prev
@@ -28,7 +28,7 @@ const RouterLayout = ({children, handler}: RouterLayoutProps) => {
               className="flex flex-row items-center"
               type="button"
               onClick={() => handler()}
-              style={{margin: "1rem"}}
+              style={{margin: "1rem", fontSize: "36px"}}
             >
               Next
               <FaArrowRight className="ml-2" />
