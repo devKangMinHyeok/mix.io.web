@@ -4,7 +4,7 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 
 const SetGlassSizePage = () => {
-  const [radius, setRadius] = useState<number | undefined>(200);
+  const [radius, setRadius] = useState<number | undefined>(300);
   const router = useRouter();
 
   const handleNextPage = () => {

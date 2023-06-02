@@ -7,7 +7,12 @@ import GlassItemView from "./GlassItemView";
 
 const GlassItem = ({glass}: {glass: IGlass}) => {
   return (
-    <Link href={`/glass/${glass.id}`} key={glass.name}>
+    <Link
+      href={{
+        pathname: "/making",
+        query: {type: glass.type, size: glass.size, height: glass.height},
+      }}
+    >
       <GlassItemView type={glass.type} name={glass.name} />
     </Link>
   );

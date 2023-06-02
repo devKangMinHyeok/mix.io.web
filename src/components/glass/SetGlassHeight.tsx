@@ -1,129 +1,139 @@
+import {SetGlassHeightProps} from "@src/interfaces";
 import {useEffect, useRef, useState} from "react";
 
-const SetGlassHeight = () => {
-  const [drinkEnd, setDringEnd] = useState(100);
-  const [glassStart, setGlassStart] = useState(600);
-  const [isDraggingD, setIsDraggingD] = useState(false);
-  const [isDraggingG, setIsDraggingG] = useState(false);
-  const containerRefD = useRef<HTMLDivElement>(null);
-  const containerRefG = useRef<HTMLDivElement>(null);
+const registDragEvent = ({
+  onDragChange,
+  onDragEnd,
+  stopPropagation,
+}: {
+  onDragChange?: (deltaY: number) => void;
+  onDragEnd?: (deltaY: number) => void;
+  stopPropagation?: boolean;
+}) => {
+  return {
+    onTouchStart: (touchEvent: React.TouchEvent<HTMLDivElement>) => {
+      if (stopPropagation) touchEvent.stopPropagation();
 
-  const handleTouchStart = (callback: (value: boolean) => void) => {
-    callback(true);
-  };
+      const touchMoveHandler = (moveEvent: TouchEvent) => {
+        moveEvent.preventDefault();
+        const deltaX = moveEvent.touches[0].pageX - touchEvent.touches[0].pageX;
+        const deltaY = moveEvent.touches[0].pageY - touchEvent.touches[0].pageY;
+        onDragChange?.(deltaY);
+      };
 
-  const handleTouchEnd = (callback: (value: boolean) => void) => {
-    callback(false);
+      const touchEndHandler = (moveEvent: TouchEvent) => {
+        const deltaX =
+          moveEvent.changedTouches[0].pageX -
+          touchEvent.changedTouches[0].pageX;
+        const deltaY =
+          moveEvent.changedTouches[0].pageY -
+          touchEvent.changedTouches[0].pageY;
+        onDragEnd?.(deltaY);
+        document.removeEventListener("touchmove", touchMoveHandler);
+      };
+
+      document.addEventListener("touchmove", touchMoveHandler, {
+        passive: false,
+        capture: true,
+      });
+      document.addEventListener("touchend", touchEndHandler, {once: true});
+    },
   };
+};
+
+const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
+  const boundaryRef = useRef<HTMLDivElement>(null);
+  const [{y, h}, setConfig] = useState({
+    y: 200,
+    h: 500,
+  });
 
   useEffect(() => {
-    const handleGlobalTouchEnd = () => {
-      setIsDraggingD(false);
-    };
-
-    const handleGlobalTouchMove = (event: TouchEvent) => {
-      if (isDraggingD) {
-        event.preventDefault();
-        const containerHeight = containerRefD.current?.offsetHeight || 0;
-        const maxAllowedHeight = containerHeight + 30; // 드래그바가 박스 안에 위치하도록 제한
-        const minAllowedHeight = containerHeight - 270;
-        const newHeight = Math.min(
-          Math.max(event.touches[0].clientY, minAllowedHeight),
-          maxAllowedHeight
-        );
-        setDringEnd(newHeight);
-      }
-    };
-
-    document.addEventListener("touchend", handleGlobalTouchEnd);
-    document.addEventListener("touchmove", handleGlobalTouchMove, {
-      passive: false,
-    });
-
-    return () => {
-      document.removeEventListener("touchend", handleGlobalTouchEnd);
-      document.removeEventListener("touchmove", handleGlobalTouchMove);
-    };
-  }, [isDraggingD]);
-
-  useEffect(() => {
-    const handleGlobalTouchEnd = () => {
-      setIsDraggingG(false);
-    };
-
-    const handleGlobalTouchMove = (event: TouchEvent) => {
-      if (isDraggingG) {
-        event.preventDefault();
-        const containerHeight = containerRefG.current?.offsetHeight || 0;
-        const maxAllowedHeight = containerHeight + 400; // 드래그바가 박스 안에 위치하도록 제한
-        const minAllowedHeight = containerHeight + 100;
-        const newHeight = Math.min(
-          Math.max(event.touches[0].clientY, minAllowedHeight),
-          maxAllowedHeight
-        );
-        setGlassStart(newHeight);
-      }
-    };
-
-    document.addEventListener("touchend", handleGlobalTouchEnd);
-    document.addEventListener("touchmove", handleGlobalTouchMove, {
-      passive: false,
-    });
-
-    return () => {
-      document.removeEventListener("touchend", handleGlobalTouchEnd);
-      document.removeEventListener("touchmove", handleGlobalTouchMove);
-    };
-  }, [isDraggingG]);
+    const newHeight = Math.floor(h / 10) * 10;
+    setHeight(newHeight);
+  }, [h, y, setHeight]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
+    <div className="flex flex-col items-center" ref={boundaryRef}>
       <div
+        className="z-0 absolute left-1/2 top-1/2"
         style={{
-          height: "40vh",
-          width: "100vw",
-          position: "relative",
+          transform: "translate(-50%,-50%)",
+          fontWeight: 300,
+          fontSize: "48px",
+          lineHeight: "55px",
         }}
-        ref={containerRefD}
-        onTouchStart={() => handleTouchStart(setIsDraggingD)}
-        onTouchEnd={() => handleTouchEnd(setIsDraggingD)}
       >
-        <div
-          style={{
-            position: "absolute",
-            bottom: `calc(${-drinkEnd}px + 40vh + 65px)`,
-            width: "100%",
-            height: "10px",
-            backgroundColor: "blue",
-          }}
-        />
+        Volume
       </div>
-      Volume
       <div
+        className="z-0 fixed left-1/2 border-b-2 border-t-2 border-dashed border-black text-center"
         style={{
-          height: "40vh",
+          backgroundColor: "rgba(0, 0, 0, 0.08)",
+          transform: "translate(-50%)",
           width: "100vw",
-          position: "relative",
+          height: h,
+          top: y,
         }}
-        ref={containerRefG}
-        onTouchStart={() => handleTouchStart(setIsDraggingG)}
-        onTouchEnd={() => handleTouchEnd(setIsDraggingG)}
       >
         <div
-          style={{
-            position: "absolute",
-            bottom: `calc(${-glassStart}px + 80vh + 65px)`,
-            width: "100%",
-            height: "10px",
-            backgroundColor: "blue",
-          }}
-        />
+          // 3️⃣
+          className="absolute -top-1 left-0 right-0 h-2 cursor-s-resize flex items-center justify-center"
+          {...registDragEvent({
+            onDragChange: (deltaY) => {
+              setConfig({
+                y: y + deltaY,
+                h: h - deltaY,
+              });
+            },
+          })}
+        >
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{
+              transform: "translate(-50%, -36px)",
+            }}
+          >
+            Drink ends here
+          </div>
+          <div
+            style={{
+              borderRadius: 50,
+              width: "16px",
+              height: "16px",
+              backgroundColor: "black",
+            }}
+          />
+        </div>
+        <div
+          // 3️⃣
+          className="absolute -bottom-1 left-0 right-0 h-2 cursor-s-resize flex items-center justify-center"
+          {...registDragEvent({
+            onDragChange: (deltaY) => {
+              setConfig({
+                y: y,
+                h: h + deltaY,
+              });
+            },
+          })}
+        >
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{
+              transform: "translate(-50%, 16px)",
+            }}
+          >
+            Glass starts here
+          </div>
+          <div
+            style={{
+              borderRadius: 50,
+              width: "16px",
+              height: "16px",
+              backgroundColor: "black",
+            }}
+          />
+        </div>
       </div>
     </div>
   );

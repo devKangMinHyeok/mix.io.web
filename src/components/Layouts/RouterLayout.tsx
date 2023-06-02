@@ -13,24 +13,28 @@ const RouterLayout = ({children, handler}: RouterLayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          style={{margin: "1rem"}}
-        >
-          <FaArrowLeft className="mr-2" />
-          Prev
-        </button>
-        {handler && (
+        <div className="flex justify-between">
           <button
+            className="flex flex-row items-center"
             type="button"
-            onClick={() => handler()}
+            onClick={() => router.back()}
             style={{margin: "1rem"}}
           >
-            <FaArrowRight className="ml-2" />
-            Next
+            <FaArrowLeft className="mr-2" />
+            Prev
           </button>
-        )}
+          {handler && (
+            <button
+              className="flex flex-row items-center"
+              type="button"
+              onClick={() => handler()}
+              style={{margin: "1rem"}}
+            >
+              Next
+              <FaArrowRight className="ml-2" />
+            </button>
+          )}
+        </div>
         {children}
       </main>
     </div>
