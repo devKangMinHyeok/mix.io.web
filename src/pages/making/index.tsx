@@ -2,23 +2,24 @@ import RouterLayout from "@components/Layouts/RouterLayout";
 import SetGlassHeight from "@components/glass/SetGlassHeight";
 import {useRouter} from "next/router";
 import {useState} from "react";
+import SetVolume from "@components/making/SetVolume";
 
-const SetGlassHeightPage = () => {
-  const [height, setHeight] = useState<number | undefined>(200);
+const MakingPage = () => {
   const router = useRouter();
+  const [height, setHeight] = useState<number | undefined>(200);
   const handleNextPage = () => {
     router.push({
-      pathname: "/making",
+      pathname: "/making/pour",
       query: {...router.query, height: height},
     });
   };
   return (
     <div>
       <RouterLayout handler={handleNextPage}>
-        <SetGlassHeight height={height} setHeight={setHeight} />
+        <SetVolume height={height} setHeight={setHeight} />
       </RouterLayout>
     </div>
   );
 };
 
-export default SetGlassHeightPage;
+export default MakingPage;

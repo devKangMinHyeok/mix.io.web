@@ -1,47 +1,8 @@
+import {registDragEvent} from "@components/glass/SetGlassHeight";
 import {SetGlassHeightProps} from "@src/interfaces";
 import {useEffect, useRef, useState} from "react";
 
-export const registDragEvent = ({
-  onDragChange,
-  onDragEnd,
-  stopPropagation,
-}: {
-  onDragChange?: (deltaY: number) => void;
-  onDragEnd?: (deltaY: number) => void;
-  stopPropagation?: boolean;
-}) => {
-  return {
-    onTouchStart: (touchEvent: React.TouchEvent<HTMLDivElement>) => {
-      if (stopPropagation) touchEvent.stopPropagation();
-
-      const touchMoveHandler = (moveEvent: TouchEvent) => {
-        moveEvent.preventDefault();
-        const deltaX = moveEvent.touches[0].pageX - touchEvent.touches[0].pageX;
-        const deltaY = moveEvent.touches[0].pageY - touchEvent.touches[0].pageY;
-        onDragChange?.(deltaY);
-      };
-
-      const touchEndHandler = (moveEvent: TouchEvent) => {
-        const deltaX =
-          moveEvent.changedTouches[0].pageX -
-          touchEvent.changedTouches[0].pageX;
-        const deltaY =
-          moveEvent.changedTouches[0].pageY -
-          touchEvent.changedTouches[0].pageY;
-        onDragEnd?.(deltaY);
-        document.removeEventListener("touchmove", touchMoveHandler);
-      };
-
-      document.addEventListener("touchmove", touchMoveHandler, {
-        passive: false,
-        capture: true,
-      });
-      document.addEventListener("touchend", touchEndHandler, {once: true});
-    },
-  };
-};
-
-const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
+const SetVolume = ({height, setHeight}: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
   const [{y, h}, setConfig] = useState({
     y: 200,
@@ -64,7 +25,7 @@ const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
           lineHeight: "55px",
         }}
       >
-        Volume
+        {height}ml
       </div>
       <div
         className="z-0 fixed left-1/2 border-b-2 border-t-2 border-dashed border-black text-center"
@@ -139,4 +100,4 @@ const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
   );
 };
 
-export default SetGlassHeight;
+export default SetVolume;

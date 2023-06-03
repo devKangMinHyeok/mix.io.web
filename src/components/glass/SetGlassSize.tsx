@@ -1,11 +1,7 @@
 import RouterLayout from "@components/Layouts/RouterLayout";
+import {SetGlassSizeProps} from "@src/interfaces";
 import {useRouter} from "next/router";
 import React, {ChangeEvent, useEffect, useState} from "react";
-
-interface SetGlassSizeProps {
-  radius: number | undefined;
-  setRadius: React.Dispatch<React.SetStateAction<number | undefined>>;
-}
 
 const SetGlassSize = ({radius, setRadius}: SetGlassSizeProps) => {
   const router = useRouter();
@@ -16,51 +12,32 @@ const SetGlassSize = ({radius, setRadius}: SetGlassSizeProps) => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          marginTop: "50px",
-          position: "relative",
-          width: "300px",
-          height: "300px",
-        }}
-      >
+    <div className="flex flex-col items-center">
+      <div className="mt-8 relative w-72 h-72">
         <div
+          className="z-0 fixed top-1/2 left-1/2 border-2 border-black text-center flex items-center justify-center"
           style={{
-            zIndex: 0,
-            position: "fixed",
-            top: "50%",
-            left: "50%",
             transform: "translate(-50%, -50%)",
             width: `${radius}px`,
             height: `${radius}px`,
-            borderRadius: "50%",
-            border: "2px solid black",
-            textAlign: "center",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            borderRadius: router.query.type === "CYLINDER" ? "50%" : "0%",
+            fontWeight: 300,
+            fontSize: "48px",
+            lineHeight: "55px",
           }}
         >
           Glass Size
         </div>
       </div>
       <input
+        className="z-1 fixed"
         type="range"
-        min="200"
+        min="300"
         max="600"
         value={radius || ""}
         onChange={handleSliderChange}
         style={{
           width: "300px",
-          zIndex: 1,
-          position: "fixed",
           bottom: "60px",
         }}
       />
