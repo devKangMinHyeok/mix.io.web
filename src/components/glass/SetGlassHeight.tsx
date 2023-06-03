@@ -1,5 +1,5 @@
-import {SetGlassHeightProps} from "@src/interfaces";
-import {useEffect, useRef, useState} from "react";
+import { SetGlassHeightProps } from "@src/interfaces";
+import { useEffect, useRef, useState } from "react";
 
 export const registDragEvent = ({
   onDragChange,
@@ -15,6 +15,7 @@ export const registDragEvent = ({
       if (stopPropagation) touchEvent.stopPropagation();
 
       const touchMoveHandler = (moveEvent: TouchEvent) => {
+        if (moveEvent.cancelable) moveEvent.preventDefault();
         moveEvent.preventDefault();
         const deltaX = moveEvent.touches[0].pageX - touchEvent.touches[0].pageX;
         const deltaY = moveEvent.touches[0].pageY - touchEvent.touches[0].pageY;
@@ -22,6 +23,7 @@ export const registDragEvent = ({
       };
 
       const touchEndHandler = (moveEvent: TouchEvent) => {
+        if (moveEvent.cancelable) moveEvent.preventDefault();
         const deltaX =
           moveEvent.changedTouches[0].pageX -
           touchEvent.changedTouches[0].pageX;
@@ -36,14 +38,14 @@ export const registDragEvent = ({
         passive: false,
         capture: true,
       });
-      document.addEventListener("touchend", touchEndHandler, {once: true});
+      document.addEventListener("touchend", touchEndHandler, { once: true });
     },
   };
 };
 
-const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
+const SetGlassHeight = ({ height, setHeight }: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
-  const [{y, h}, setConfig] = useState({
+  const [{ y, h }, setConfig] = useState({
     y: 200,
     h: 500,
   });
