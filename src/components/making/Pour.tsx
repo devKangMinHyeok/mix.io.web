@@ -2,7 +2,7 @@ import {useRouter} from "next/router";
 
 const Pour = () => {
   const router = useRouter();
-  const height: number = router.query.height;
+  const height: number = parseInt(router.query.height as string);
   return (
     <div className="flex flex-col items-center">
       <div
