@@ -1,8 +1,8 @@
-import {registDragEvent} from "@components/glass/SetGlassHeight";
-import {SetGlassHeightProps} from "@src/interfaces";
-import {useEffect, useRef, useState} from "react";
+import { registDragEvent } from "@components/glass/SetGlassHeight";
+import { SetGlassHeightProps } from "@src/interfaces";
+import { useEffect, useRef, useState } from "react";
 
-const SetVolume = ({height, setHeight}: SetGlassHeightProps) => {
+const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
 
   return (
