@@ -11,7 +11,8 @@ export interface IGlass {
   name: string;
   type: GlassType;
   size: number;
-  height: number;
+  y: number;
+  h: number;
 }
 
 export type GlassType = "CYLINDER" | "SQUARE";

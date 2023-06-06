@@ -10,7 +10,7 @@ const GlassItem = ({glass}: {glass: IGlass}) => {
     <Link
       href={{
         pathname: "/making",
-        query: {type: glass.type, size: glass.size, height: glass.height},
+        query: {type: glass.type, size: glass.size, y: glass.y, h: glass.h},
       }}
     >
       <GlassItemView type={glass.type} name={glass.name} />

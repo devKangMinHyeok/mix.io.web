@@ -1,8 +1,8 @@
-import { registDragEvent } from "@components/glass/SetGlassHeight";
-import { SetGlassHeightProps } from "@src/interfaces";
-import { useEffect, useRef, useState } from "react";
+import {registDragEvent} from "@components/glass/SetGlassHeight";
+import {SetGlassHeightProps} from "@src/interfaces";
+import {useEffect, useRef, useState} from "react";
 
-const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
+const SetVolume = ({height, setHeight}: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -38,6 +38,12 @@ const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
                 h: height.h - deltaY,
               });
             },
+            onDragEnd: (deltaY) => {
+              setHeight({
+                y: Math.floor((height.y + deltaY) / 10) * 10,
+                h: Math.ceil((height.h - deltaY) / 10) * 10,
+              });
+            },
           })}
         >
           <div
@@ -65,6 +71,12 @@ const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
               setHeight({
                 y: height.y,
                 h: height.h + deltaY,
+              });
+            },
+            onDragEnd: (deltaY) => {
+              setHeight({
+                y: Math.floor(height.y / 10) * 10,
+                h: Math.floor((height.h + deltaY) / 10) * 10,
               });
             },
           })}
