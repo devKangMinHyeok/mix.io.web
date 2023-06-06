@@ -16,15 +16,11 @@ export const registDragEvent = ({
 
       const touchMoveHandler = (moveEvent: TouchEvent) => {
         moveEvent.preventDefault();
-        const deltaX = moveEvent.touches[0].pageX - touchEvent.touches[0].pageX;
         const deltaY = moveEvent.touches[0].pageY - touchEvent.touches[0].pageY;
         onDragChange?.(deltaY);
       };
 
       const touchEndHandler = (moveEvent: TouchEvent) => {
-        const deltaX =
-          moveEvent.changedTouches[0].pageX -
-          touchEvent.changedTouches[0].pageX;
         const deltaY =
           moveEvent.changedTouches[0].pageY -
           touchEvent.changedTouches[0].pageY;
@@ -43,15 +39,12 @@ export const registDragEvent = ({
 
 const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
-  const [{y, h}, setConfig] = useState({
-    y: 200,
-    h: 500,
-  });
 
-  useEffect(() => {
-    const newHeight = Math.floor(h / 10) * 10;
-    setHeight(newHeight);
-  }, [h, y, setHeight]);
+  // useEffect(() => {
+  //   const newH = Math.floor(height.h / 10) * 10;
+  //   const newY = Math.floor(height.y / 10) * 10;
+  //   setHeight({h: newH, y: newY});
+  // }, [height, setHeight]);
 
   return (
     <div className="flex flex-col items-center" ref={boundaryRef}>
@@ -72,8 +65,8 @@ const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
           backgroundColor: "rgba(0, 0, 0, 0.08)",
           transform: "translate(-50%)",
           width: "100vw",
-          height: h,
-          top: y,
+          height: height.h,
+          top: height.y,
         }}
       >
         <div
@@ -81,9 +74,9 @@ const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
           className="absolute -top-1 left-0 right-0 h-2 cursor-s-resize flex items-center justify-center"
           {...registDragEvent({
             onDragChange: (deltaY) => {
-              setConfig({
-                y: y + deltaY,
-                h: h - deltaY,
+              setHeight({
+                y: height.y + deltaY,
+                h: height.h - deltaY,
               });
             },
           })}
@@ -110,9 +103,9 @@ const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
           className="absolute -bottom-1 left-0 right-0 h-2 cursor-s-resize flex items-center justify-center"
           {...registDragEvent({
             onDragChange: (deltaY) => {
-              setConfig({
-                y: y,
-                h: h + deltaY,
+              setHeight({
+                y: height.y,
+                h: height.h + deltaY,
               });
             },
           })}

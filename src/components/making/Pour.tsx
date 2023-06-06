@@ -2,16 +2,19 @@ import {useRouter} from "next/router";
 
 const Pour = () => {
   const router = useRouter();
-  const height: number = parseInt(router.query.height as string);
+  const y: number = parseInt(router.query.y as string);
+  console.log(y);
+  const height: number = parseInt(router.query.h as string);
   return (
     <div className="flex flex-col items-center">
       <div
-        className="z-0 absolute left-1/2 top-1/2"
+        className="z-0 absolute left-1/2"
         style={{
-          transform: "translate(-50%,-50%)",
+          transform: "translate(-50%)",
           fontWeight: 300,
           fontSize: "48px",
           lineHeight: "55px",
+          top: y,
         }}
       >
         <div
