@@ -41,11 +41,9 @@ export const registDragEvent = ({
 const SetGlassHeight = ({ height, setHeight }: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   const newH = Math.floor(height.h / 10) * 10;
-  //   const newY = Math.floor(height.y / 10) * 10;
-  //   setHeight({h: newH, y: newY});
-  // }, [height, setHeight]);
+  useEffect(() => {
+    setHeight((prev) => ({...prev, h: window.innerHeight - 400}));
+  }, []);
 
   return (
     <div className="flex flex-col items-center" ref={boundaryRef}>

@@ -6,7 +6,7 @@ import {useState} from "react";
 const SetGlassHeightPage = () => {
   const [{y, h}, setHeight] = useState<{y: number; h: number}>({
     y: 200,
-    h: window.innerHeight - 400,
+    h: 400,
   });
   const router = useRouter();
   const handleNextPage = () => {
