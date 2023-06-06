@@ -1,22 +1,20 @@
-import { SetGlassHeightProps } from "@src/interfaces";
-import { useEffect, useRef, useState } from "react";
+import {SetGlassHeightProps} from "@src/interfaces";
+import {useEffect, useRef, useState} from "react";
 
 export const registDragEvent = ({
   onDragChange,
   onDragEnd,
-  stopPropagation,
 }: {
   onDragChange?: (deltaY: number) => void;
   onDragEnd?: (deltaY: number) => void;
-  stopPropagation?: boolean;
 }) => {
   return {
     onTouchStart: (touchEvent: React.TouchEvent<HTMLDivElement>) => {
-      if (stopPropagation) touchEvent.stopPropagation();
+      touchEvent.stopPropagation();
+      const targetElement = touchEvent.currentTarget as HTMLElement;
 
       const touchMoveHandler = (moveEvent: TouchEvent) => {
         if (moveEvent.cancelable) moveEvent.preventDefault();
-        moveEvent.preventDefault();
         const deltaY = moveEvent.touches[0].pageY - touchEvent.touches[0].pageY;
         onDragChange?.(deltaY);
       };
@@ -26,19 +24,20 @@ export const registDragEvent = ({
           moveEvent.changedTouches[0].pageY -
           touchEvent.changedTouches[0].pageY;
         onDragEnd?.(deltaY);
-        document.removeEventListener("touchmove", touchMoveHandler);
+        targetElement.removeEventListener("touchmove", touchMoveHandler);
+        targetElement.removeEventListener("touchend", touchEndHandler);
       };
 
-      document.addEventListener("touchmove", touchMoveHandler, {
+      targetElement.addEventListener("touchmove", touchMoveHandler, {
         passive: false,
         capture: true,
       });
-      document.addEventListener("touchend", touchEndHandler, { once: true });
+      targetElement.addEventListener("touchend", touchEndHandler, {once: true});
     },
   };
 };
 
-const SetGlassHeight = ({ height, setHeight }: SetGlassHeightProps) => {
+const SetGlassHeight = ({height, setHeight}: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -78,6 +77,12 @@ const SetGlassHeight = ({ height, setHeight }: SetGlassHeightProps) => {
                 h: height.h - deltaY,
               });
             },
+            onDragEnd: (deltaY) => {
+              setHeight({
+                y: Math.floor((height.y + deltaY) / 10) * 10,
+                h: Math.ceil((height.h - deltaY) / 10) * 10,
+              });
+            },
           })}
         >
           <div
@@ -105,6 +110,12 @@ const SetGlassHeight = ({ height, setHeight }: SetGlassHeightProps) => {
               setHeight({
                 y: height.y,
                 h: height.h + deltaY,
+              });
+            },
+            onDragEnd: (deltaY) => {
+              setHeight({
+                y: Math.floor(height.y / 10) * 10,
+                h: Math.floor((height.h + deltaY) / 10) * 10,
               });
             },
           })}

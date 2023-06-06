@@ -1,0 +1,10 @@
+body {
+  font-family: -apple-system, Helvetica, sans-serif;
+}
+
+@font-face {
+  font-family: "Helvetica";
+  font-style: normal;
+  font-weight: 300;
+  src: url(./Helvetica.ttf) format("truetype");
+}
