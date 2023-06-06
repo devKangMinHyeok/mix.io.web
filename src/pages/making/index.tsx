@@ -6,17 +6,24 @@ import SetVolume from "@components/making/SetVolume";
 
 const MakingPage = () => {
   const router = useRouter();
-  const [height, setHeight] = useState<number | undefined>(200);
+  const [{y, h}, setHeight] = useState<{y: number; h: number}>({
+    y: Number(router.query.y),
+    h: Number(router.query.h),
+  });
   const handleNextPage = () => {
     router.push({
       pathname: "/making/pour",
-      query: {...router.query, height: height},
+      query: {
+        ...router.query,
+        y: Math.floor(y / 10) * 10,
+        h: Math.floor(h / 10) * 10,
+      },
     });
   };
   return (
     <div>
       <RouterLayout handler={handleNextPage}>
-        <SetVolume height={height} setHeight={setHeight} />
+        <SetVolume height={{y, h}} setHeight={setHeight} />
       </RouterLayout>
     </div>
   );

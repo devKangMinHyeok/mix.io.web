@@ -21,6 +21,6 @@ export interface SetGlassSizeProps {
   setRadius: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 export interface SetGlassHeightProps {
-  height: number | undefined;
-  setHeight: React.Dispatch<React.SetStateAction<number | undefined>>;
+  height: {y: number; h: number};
+  setHeight: React.Dispatch<React.SetStateAction<{y: number; h: number}>>;
 }

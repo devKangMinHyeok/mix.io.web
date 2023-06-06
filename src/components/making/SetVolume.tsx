@@ -4,15 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
   const boundaryRef = useRef<HTMLDivElement>(null);
-  const [{ y, h }, setConfig] = useState({
-    y: 200,
-    h: 500,
-  });
-
-  useEffect(() => {
-    const newHeight = Math.floor(h / 10) * 10;
-    setHeight(newHeight);
-  }, [h, y, setHeight]);
 
   return (
     <div className="flex flex-col items-center" ref={boundaryRef}>
@@ -25,7 +16,7 @@ const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
           lineHeight: "55px",
         }}
       >
-        {height}ml
+        {Math.floor(height.h / 10) * 10}ml
       </div>
       <div
         className="z-0 fixed left-1/2 border-b-2 border-t-2 border-dashed border-black text-center"
@@ -33,8 +24,8 @@ const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
           backgroundColor: "rgba(0, 0, 0, 0.08)",
           transform: "translate(-50%)",
           width: "100vw",
-          height: h,
-          top: y,
+          height: height.h,
+          top: height.y,
         }}
       >
         <div
@@ -42,9 +33,9 @@ const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
           className="absolute -top-1 left-0 right-0 h-2 cursor-s-resize flex items-center justify-center"
           {...registDragEvent({
             onDragChange: (deltaY) => {
-              setConfig({
-                y: y + deltaY,
-                h: h - deltaY,
+              setHeight({
+                y: height.y + deltaY,
+                h: height.h - deltaY,
               });
             },
           })}
@@ -71,9 +62,9 @@ const SetVolume = ({ height, setHeight }: SetGlassHeightProps) => {
           className="absolute -bottom-1 left-0 right-0 h-2 cursor-s-resize flex items-center justify-center"
           {...registDragEvent({
             onDragChange: (deltaY) => {
-              setConfig({
-                y: y,
-                h: h + deltaY,
+              setHeight({
+                y: height.y,
+                h: height.h + deltaY,
               });
             },
           })}
